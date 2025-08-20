@@ -25,8 +25,9 @@ pipeline {
              echo "File exists"
              else
              echo "File does not exist"
-             npm test
              fi
+             echo "Starting the test process"
+             npm test
              '''
             }
         }
