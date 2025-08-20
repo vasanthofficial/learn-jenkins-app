@@ -52,6 +52,7 @@ pipeline {
             node_modules/.bin/serve -s build &
             sleep 20
             npx playwright test
+            npx playwright test --reporter=line
         '''
             }
         }
