@@ -19,6 +19,12 @@ pipeline {
             }
         }
         stage('Test') {
+                agent {
+                docker {
+                    /* groovylint-disable-next-line DuplicateStringLiteral */
+                    image 'node:18-alpine'
+                }
+                }
             steps {
                 sh '''
              if [ -f build/index.html ]; then
