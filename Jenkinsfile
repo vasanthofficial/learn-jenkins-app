@@ -1,10 +1,10 @@
 pipeline{
-    agent {
+        stage('Build'){
+                agent {
         docker{
             image 'node:18-alpine'
         }
     }
-        stage('Build'){
            steps{
                sh '''
                 echo "Build process started..."
