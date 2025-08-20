@@ -23,6 +23,7 @@ pipeline {
                 docker {
                     /* groovylint-disable-next-line DuplicateStringLiteral */
                     image 'node:18-alpine'
+                    reuseNode true
                 }
                 }
             steps {
