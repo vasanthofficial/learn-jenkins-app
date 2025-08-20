@@ -3,6 +3,7 @@ pipeline{
         docker{
             image 'node:18-alpine'
         }
+    }
         stage('Build'){
            steps{
                sh '''
@@ -14,4 +15,3 @@ pipeline{
            }
         }
     }
-}
