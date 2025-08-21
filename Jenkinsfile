@@ -1,9 +1,9 @@
     /* groovylint-disable-next-line CompileStatic */
 pipeline {
         agent any
-        environment{
-            NETLIFY_SITE_ID = "62a7e663-dcfb-4769-9525-5b24df10cac1"
-
+        environment {
+            NETLIFY_SITE_ID = '62a7e663-dcfb-4769-9525-5b24df10cac1'
+            NEFTLIFY_AUTH_TOKEN = credentials('secretkey')
         }
         stages {
             stage('Build') {
@@ -51,7 +51,7 @@ pipeline {
                 }
 
                 steps {
-                            sh '''
+                sh '''
                         npm install serve
                         node_modules/.bin/serve -s build &
                         sleep 20
@@ -60,19 +60,20 @@ pipeline {
                     '''
                 }
             }
-            stage('Deploy'){
-                agent{
-                    docker{
+            stage('Deploy') {
+                agent {
+                    docker {
                         image 'node:18-alpine'
                         reuseNode true
                     }
                 }
-                steps{
+                steps {
                     sh '''
                      echo "Deployment started"
                      npm install netlify-cli@20.1.1
-                    //  node_modules/.bin/netlify deploy="build" --prod
+                    node_modules/.bin/netlify deploy --dir=build --prod
                     echo "This project Id of the website is: $NETLIFY_SITE_ID"
+                    node_modules/.bin/netlify status
                     '''
                 }
             }
