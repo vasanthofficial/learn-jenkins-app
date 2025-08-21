@@ -71,9 +71,10 @@ pipeline {
                     sh '''
                      echo "Deployment started"
                      npm install netlify-cli@20.1.1
-                    node_modules/.bin/netlify deploy --dir=build --prod
                     echo "This project Id of the website is: $NETLIFY_SITE_ID"
                     node_modules/.bin/netlify status
+                    /* groovylint-disable-next-line LineLength */
+                    node_modules/.bin/netlify deploy --dir=build --prod --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
                     '''
                 }
             }
