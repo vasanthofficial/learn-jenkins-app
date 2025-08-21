@@ -1,4 +1,3 @@
-    /* groovylint-disable-next-line CompileStatic */
 pipeline {
         agent any
         environment {
@@ -25,7 +24,6 @@ pipeline {
             stage('Test') {
                     agent {
                     docker {
-                        /* groovylint-disable-next-line DuplicateStringLiteral */
                         image 'node:18-alpine'
                         reuseNode true
                     }
