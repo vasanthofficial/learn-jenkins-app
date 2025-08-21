@@ -70,10 +70,8 @@ pipeline {
                      echo "Deployment started"
                      npm install netlify-cli@20.1.1
                     echo "This project Id of the website is: $NETLIFY_SITE_ID"
-                    /* groovylint-disable-next-line LineLength */
-                    node_modules/.bin/netlify deploy --dir=build --prod --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
                     node_modules/.bin/netlify status
-
+                    node_modules/.bin/netlify deploy --dir=build --prod --auth=$NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
                     '''
                 }
             }
@@ -81,7 +79,6 @@ pipeline {
     post {
         always {
             junit 'jest-results/junit.xml'
-            /* groovylint-disable-next-line LineLength */
             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'HTML Reports', reportTitles: '', useWrapperFileDirectly: true])    }
     }
 }
