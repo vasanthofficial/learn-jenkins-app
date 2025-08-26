@@ -82,9 +82,11 @@ pipeline {
                 }
             }
             stage('Approval'){
-                timeout(time: 15, unit: 'SECONDS') {
-                input 'Approval for deployment'
-              }
+                steps{
+                      timeout(time: 15, unit: 'SECONDS') {
+                      input 'Approval for deployment'
+                      }
+                }
             }
             stage('Deploy Production') {
                 agent {
