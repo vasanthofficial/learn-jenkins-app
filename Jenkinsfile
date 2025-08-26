@@ -18,6 +18,7 @@ pipeline {
                     npm --version
                     npm ci
                     npm run build
+                    echo "Testing git polling"
                 '''
                 }
             }
