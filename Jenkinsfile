@@ -19,6 +19,7 @@ pipeline {
                     npm ci
                     npm run build
                     echo "Testing git polling"
+                    echo "Checking build process"
                 '''
                 }
             }
