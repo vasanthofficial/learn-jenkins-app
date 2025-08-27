@@ -92,7 +92,7 @@ pipeline {
                     }
                 }
                 environment{
-                    CI_ENVIRONMENT_URL = ${env.UAT}
+                    CI_ENVIRONMENT_URL = "${env.UAT}"
                 }
                 steps {
                 sh '''
