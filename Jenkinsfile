@@ -37,7 +37,7 @@ pipeline {
                 aws s3api create-bucket \
                 --bucket jenkins-webby-bucket01 \
                 --region us-east-1
-                aws sync build arn:aws:s3:::jenkins-webby-bucket01/
+                aws sync build s3://jenkins-webby-bucket01
                 '''
                 }
               }
