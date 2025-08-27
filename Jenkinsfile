@@ -55,8 +55,7 @@ pipeline {
                 }
                 steps {
                 sh '''
-                        npm install serve
-                        node_modules/.bin/serve -s build &
+                        serve -s build &
                         sleep 20
                         npx playwright test
                         npx playwright test --reporter=line
@@ -114,7 +113,7 @@ pipeline {
                     CI_ENVIRONMENT_URL = 'https://fabulous-hummingbird-413a57.netlify.app'
                 }
                 steps {
-                sh '''   node_modules/.bin/netlify --version
+                sh '''   netlify --version
                          echo "This project Id of the website is: $NETLIFY_SITE_ID"
                          netlify status
                          netlify deploy --dir=build --prod
