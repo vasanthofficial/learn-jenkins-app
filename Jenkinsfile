@@ -6,11 +6,6 @@ pipeline {
             REACT_APP_VERSION = "2.5.$BUILD_ID"
         }
         stages {
-            stage('Docker image'){
-                steps{
-                    sh 'docker build -t custom-build .'
-                }
-            }
             stage('Build') {
                     agent {
                     docker {
