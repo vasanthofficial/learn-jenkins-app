@@ -93,7 +93,7 @@ pipeline {
             }
             stage('Approval'){
                 steps{
-                      timeout(time: 15, unit: 'SECONDS') {
+                      timeout(time: 120, unit: 'SECONDS') {
                       input 'Approval for deployment'
                       }
                 }
