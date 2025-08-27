@@ -80,7 +80,7 @@ pipeline {
                         echo "This project Id of the website is: $NETLIFY_SITE_ID"
                         node_modules/.bin/netlify status
                         node_modules/.bin/netlify deploy --dir=build  --json >  deployment.json 
-                        CI_ENVIRONMENT_URL = $(node_modules/.bin/node-jq -r '.deploy_url' deployment.json)
+                        CI_ENVIRONMENT_URL=$(node_modules/.bin/node-jq -r '.deploy_url' deployment.json)
                         npx playwright test --reporter=line
                     '''
                 }
