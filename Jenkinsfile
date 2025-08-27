@@ -59,7 +59,7 @@ pipeline {
                 post {
                     always {
                             junit 'jest-results/junit.xml'
-                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'HTML Reports', reportTitles: '', useWrapperFileDirectly: true])   
+                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'HTML Local Reports', reportTitles: '', useWrapperFileDirectly: true])   
                         }
                      }
             }
@@ -73,13 +73,38 @@ pipeline {
                 steps {
                     sh '''
                      echo "Deployment started"
-                     npm install netlify-cli@20.1.1
+                     npm install netlify-cli@20.1.1 node-jq
                     node_modules/.bin/netlify --version
                     echo "This project Id of the website is: $NETLIFY_SITE_ID"
                     node_modules/.bin/netlify status
-                    node_modules/.bin/netlify deploy --dir=build 
+                    node_modules/.bin/netlify deploy --dir=build > --json deployment.json 
+                    '''
+                    script{
+                        env.UAT = "node_modules/.bin/node-jq -r '.deploy_url' deployment.json"
+                    }
+                }
+            }
+            stage('Staging-E2E') {
+                agent {
+                    docker {
+                        image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                        reuseNode true
+                    }
+                }
+                environment{
+                    CI_ENVIRONMENT_URL = ${env.UAT}
+                }
+                steps {
+                sh '''
+                        npx playwright test --reporter=line
                     '''
                 }
+                post {
+                    always {
+                            junit 'jest-results/junit.xml'
+                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'HTML Staging Reports', reportTitles: '', useWrapperFileDirectly: true])   
+                        }
+                   }
             }
             stage('Approval'){
                 steps{
