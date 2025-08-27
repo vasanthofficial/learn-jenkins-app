@@ -3,9 +3,22 @@ pipeline {
         environment {
             NETLIFY_SITE_ID = '62a7e663-dcfb-4769-9525-5b24df10cac1'
             NETLIFY_AUTH_TOKEN = credentials('secretkey')
-            REACT_APP_VERSION = "2.5.$BUILD_ID"
+            // REACT_APP_VERSION = "2.5.$BUILD_ID"
         }
         stages {
+            stage('AWS'){
+                agent {
+                    docker{
+                        image 'amazon/aws-cli'
+                        args '--entrypoint=""'
+                    }
+                }
+                steps{
+                    sh '''
+                   echo 'aws --version'
+                   '''
+                }
+            }
             stage('Build') {
                     agent {
                     docker {
