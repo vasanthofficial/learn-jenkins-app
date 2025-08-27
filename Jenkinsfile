@@ -63,28 +63,7 @@ pipeline {
                         }
                      }
             }
-            stage('Deploy staging') {
-                agent {
-                    docker {
-                        image 'node:18-alpine'
-                        reuseNode true
-                    }
-                }
-                steps {
-                    sh '''
-                     echo "Deployment started"
-                     npm install netlify-cli@20.1.1 node-jq
-                    node_modules/.bin/netlify --version
-                    echo "This project Id of the website is: $NETLIFY_SITE_ID"
-                    node_modules/.bin/netlify status
-                    node_modules/.bin/netlify deploy --dir=build  --json >  deployment.json 
-                    '''
-                    script{
-                        env.UAT = "node_modules/.bin/node-jq -r '.deploy_url' deployment.json"
-                    }
-                }
-            }
-            stage('Staging-E2E') {
+            stage('UAT Deployment') {
                 agent {
                     docker {
                         image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
@@ -92,10 +71,16 @@ pipeline {
                     }
                 }
                 environment{
-                    CI_ENVIRONMENT_URL = "${env.UAT}"
+                    CI_ENVIRONMENT_URL = "Place-holder"
                 }
                 steps {
-                sh '''
+                sh '''  echo "Deployment started"
+                        npm install netlify-cli@20.1.1 node-jq
+                        node_modules/.bin/netlify --version
+                        echo "This project Id of the website is: $NETLIFY_SITE_ID"
+                        node_modules/.bin/netlify status
+                        node_modules/.bin/netlify deploy --dir=build  --json >  deployment.json 
+                        CI_ENVIRONMENT_URL = $(node_modules/.bin/node-jq -r '.deploy_url' deployment.json)
                         npx playwright test --reporter=line
                     '''
                 }
@@ -113,25 +98,7 @@ pipeline {
                       }
                 }
             }
-            stage('Deploy Production') {
-                agent {
-                    docker {
-                        image 'node:18-alpine'
-                        reuseNode true
-                    }
-                }
-                steps {
-                    sh '''
-                     echo "Deployment started"
-                     npm install netlify-cli@20.1.1
-                    node_modules/.bin/netlify --version
-                    echo "This project Id of the website is: $NETLIFY_SITE_ID"
-                    node_modules/.bin/netlify status
-                    node_modules/.bin/netlify deploy --dir=build --prod
-                    '''
-                }
-            }
-            stage('Prod-E2E') {
+            stage('Production deployment') {
                 agent {
                     docker {
                         image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
@@ -142,8 +109,11 @@ pipeline {
                     CI_ENVIRONMENT_URL = 'https://fabulous-hummingbird-413a57.netlify.app'
                 }
                 steps {
-                sh '''
-                        npx playwright test --reporter=line
+                sh '''   node_modules/.bin/netlify --version
+                         echo "This project Id of the website is: $NETLIFY_SITE_ID"
+                         node_modules/.bin/netlify status
+                         node_modules/.bin/netlify deploy --dir=build --prod
+                         npx playwright test --reporter=line
                     '''
                 }
                 post {
