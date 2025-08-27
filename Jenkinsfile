@@ -6,19 +6,7 @@ pipeline {
             // REACT_APP_VERSION = "2.5.$BUILD_ID"
         }
         stages {
-            stage('AWS'){
-                agent {
-                    docker{
-                        image 'amazon/aws-cli'
-                        args '--entrypoint=""'
-                    }
-                }
-                steps{
-                    sh '''
-                   echo 'aws --version'
-                   '''
-                }
-            }
+          
             stage('Build') {
                     agent {
                     docker {
@@ -35,7 +23,26 @@ pipeline {
                 '''
                 }
             }
-                    stage('Test') {
+            stage('AWS'){
+             agent {
+                docker{
+                    image 'amazon/aws-cli'
+                    args '--entrypoint=""'
+                }
+               }
+              steps{
+                withCredentials([usernamePassword(credentialsId: 'aws-key', passwordVariable:'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                sh '''
+                aws --version
+                aws s3api create-bucket \
+                --bucket jenkins-webby-bucket01 \
+                --region us-east-1
+                aws sync build arn:aws:s3:::jenkins-webby-bucket01/
+                '''
+                }
+              }
+            }
+            stage('Test') {
                     agent {
                     docker {
                         image 'node:18-alpine'
