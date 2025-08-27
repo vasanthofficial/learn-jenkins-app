@@ -6,6 +6,11 @@ pipeline {
             REACT_APP_VERSION = "2.5.$BUILD_ID"
         }
         stages {
+            stage('Docker image'){
+                steps{
+                    sh 'docker build -t custom-build .'
+                }
+            }
             stage('Build') {
                     agent {
                     docker {
@@ -44,7 +49,7 @@ pipeline {
             stage('E2E') {
                 agent {
                     docker {
-                        image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                        image 'custom-build'
                         reuseNode true
                     }
                 }
@@ -67,7 +72,7 @@ pipeline {
             stage('UAT Deployment') {
                 agent {
                     docker {
-                        image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                        image 'custom-build'
                         reuseNode true
                     }
                 }
@@ -76,12 +81,11 @@ pipeline {
                 }
                 steps {
                 sh '''  echo "Deployment started"
-                        npm install netlify-cli@20.1.1 node-jq
-                        node_modules/.bin/netlify --version
+                        netlify --version
                         echo "This project Id of the website is: $NETLIFY_SITE_ID"
-                        node_modules/.bin/netlify status
-                        node_modules/.bin/netlify deploy --dir=build  --json >  deployment.json 
-                        CI_ENVIRONMENT_URL=$(node_modules/.bin/node-jq -r '.deploy_url' deployment.json)
+                        netlify status
+                        netlify deploy --dir=build  --json >  deployment.json 
+                        CI_ENVIRONMENT_URL=$(node-jq -r '.deploy_url' deployment.json)
                         npx playwright test --reporter=line
                     '''
                 }
@@ -102,7 +106,7 @@ pipeline {
             stage('Production deployment') {
                 agent {
                     docker {
-                        image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                        image 'custom-build'
                         reuseNode true
                     }
                 }
@@ -112,8 +116,8 @@ pipeline {
                 steps {
                 sh '''   node_modules/.bin/netlify --version
                          echo "This project Id of the website is: $NETLIFY_SITE_ID"
-                         node_modules/.bin/netlify status
-                         node_modules/.bin/netlify deploy --dir=build --prod
+                         netlify status
+                         netlify deploy --dir=build --prod
                          npx playwright test --reporter=line
                     '''
                 }
