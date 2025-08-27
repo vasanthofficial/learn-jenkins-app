@@ -27,6 +27,7 @@ pipeline {
              agent {
                 docker{
                     image 'amazon/aws-cli'
+                    reuseNode true
                     args '--entrypoint=""'
                 }
                }
@@ -37,7 +38,7 @@ pipeline {
                 aws s3api create-bucket \
                 --bucket jenkins-webby-bucket01 \
                 --region us-east-1
-                aws sync build s3://jenkins-webby-bucket01
+                aws s3 sync build s3://jenkins-webby-bucket01
                 '''
                 }
               }
