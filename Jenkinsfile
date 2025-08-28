@@ -24,7 +24,7 @@ pipeline {
                 // --region us-east-1
                 // aws s3 sync build s3://jenkins-webby-bucket01
                 sh '''
-                aws ecs register-task-definition  --cli-input-json file://src\aws\task-definition.json
+                aws ecs register-task-definition  --cli-input-json file://src/aws/task-definition.json
                 '''
                 }
               }
