@@ -8,7 +8,7 @@ pipeline{
                   reuseNode true
                   }
             }
-            stpes{
+            steps{
                    sh '''
                     echo "Build process started..."
                     npm --version
