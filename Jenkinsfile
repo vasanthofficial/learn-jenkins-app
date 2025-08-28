@@ -23,6 +23,11 @@ pipeline{
         }
        }
        stage('ECR PUSH'){
+        agent{
+            docker{
+                image 'amazon/aws-cli'
+            }
+        }
         steps{
          withCredentials([usernamePassword(credentialsId: 'aws_key', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
             sh '''
