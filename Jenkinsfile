@@ -26,7 +26,7 @@ pipeline {
                 // aws s3 sync build s3://jenkins-webby-bucket01
                 sh '''
                 yum install jq
-                LASTEST_VERSION=$(aws ecs register-task-definition  --cli-input-json file://src/aws/task-definition.json jq -r '.revision') 
+                LASTEST_VERSION=$(aws ecs register-task-definition  --cli-input-json file://src/aws/task-definition.json --output json | jq -r '.revision') 
                 aws ecs update-service  --cluster Jenkins-cluster --service Jenkins-server-nginx-service --task-definition Jenkins-server-nginx:LATEST_vERSION
                 '''
                 }
