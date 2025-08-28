@@ -19,7 +19,7 @@ pipeline{
        }
        stage('DOCKER IMAGE'){
         steps{
-            sh 'docker build -t jenkins-app:latest/my-custom-img .'
+            sh 'docker build -t jenkins-app .'
         }
        }
        stage('ECR PUSH'){
