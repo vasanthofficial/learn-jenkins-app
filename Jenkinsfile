@@ -17,7 +17,7 @@ pipeline {
                 }
                }
               steps{
-                withCredentials([usernamePassword(credentialsId: 'aws-key', passwordVariable:'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                    withCredentials([usernamePassword(credentialsId: 'aws_key', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                 // aws --version
                 // aws s3api create-bucket \
                 // --bucket jenkins-webby-bucket01 \
