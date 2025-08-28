@@ -18,12 +18,12 @@ pipeline {
                }
               steps{
                 withCredentials([usernamePassword(credentialsId: 'aws-key', passwordVariable:'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                sh '''
                 // aws --version
                 // aws s3api create-bucket \
                 // --bucket jenkins-webby-bucket01 \
                 // --region us-east-1
                 // aws s3 sync build s3://jenkins-webby-bucket01
+                sh '''
                 aws ecs register-task-definition  --cli-input-json file://src\aws\task-definition.json
                 '''
                 }
