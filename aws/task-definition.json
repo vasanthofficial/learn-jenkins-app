@@ -5,7 +5,7 @@
       "cpu": 0,
       "environment": [],
       "essential": true,
-      "image": "nginx:1.28-alpine",
+      "image": "211125779092.dkr.ecr.us-east-1.amazonaws.com/jenkins-app@sha256:c33fd53a792b15615b193b0f78f4c55ae51d896eb20427aca713ba2f3b589bd7",
       "mountPoints": [],
       "name": "Jenkins-nginx-task",
       "portMappings": [
