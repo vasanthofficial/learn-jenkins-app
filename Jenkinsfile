@@ -1,7 +1,8 @@
 pipeline{
     agent any
     environment{
-        REACT_APP_VERSION="1.5.$BUILD_ID"  
+        REACT_APP_VERSION="1.5.$BUILD_ID"
+        AWS_DOCKER_REGISTRY="211125779092.dkr.ecr.us-east-1.amazonaws.com"  
     }
     stages{
        stage('Build'){
@@ -34,7 +35,7 @@ pipeline{
             // docker push 211125779092.dkr.ecr.us-east-1.amazonaws.com/jenkins-app:latest
             sh '''
             echo $REACT_APP_VERSION
-            docker build -t jenkins-app:$REACT_APP_VERSION .
+            docker build -t $AWS_DOCKER_REGISTRY/jenkins-container:$REACT_APP_VERSION .
             '''        
         }
        }
@@ -44,7 +45,6 @@ pipeline{
                 image 'custom-aws'
                 reuseNode true
                 args '-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
-
                 }
           }
         steps{
@@ -61,7 +61,7 @@ pipeline{
             withCredentials([usernamePassword(credentialsId: 'aws_key', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
               sh '''
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 211125779092.dkr.ecr.us-east-1.amazonaws.com
-            docker tag jenkins-app:$REACT_APP_VERSION 211125779092.dkr.ecr.us-east-1.amazonaws.com/jenkins-app:latest
+            docker tag $AWS_DOCKER_REGISTRY/jenkins-container:$REACT_APP_VERSION 211125779092.dkr.ecr.us-east-1.amazonaws.com/jenkins-app:latest
             docker push 211125779092.dkr.ecr.us-east-1.amazonaws.com/jenkins-app:latest
              '''
             }
