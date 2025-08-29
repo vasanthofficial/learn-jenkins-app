@@ -53,7 +53,7 @@ pipeline{
         steps{
             withCredentials([usernamePassword(credentialsId: 'aws_key', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
               sh '''
-            TASK_VERSION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition.json --region us-east-1 | jq -r '.taskDefinition.revision')
+            TASK_VERSION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition.json --region us-east-1 | jq '.taskDefinition.revision')
             aws ecs update-service \
             --cluster Jenkins-cluster \
             --service Jenkins-server-nginx-service \
