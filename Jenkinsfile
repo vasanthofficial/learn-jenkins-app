@@ -35,7 +35,7 @@ pipeline{
             echo $REACT_APP_VERSION
             docker build -t $AWS_DOCKER_REGISTRY/jenkins-container:$REACT_APP_VERSION .
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 211125779092.dkr.ecr.us-east-1.amazonaws.com
-            docker push 211125779092.dkr.ecr.us-east-1.amazonaws.com/jenkins-app:container
+            docker push $AWS_DOCKER_REGISTRY/jenkins-container:$REACT_APP_VERSION
             '''        
            }
      
