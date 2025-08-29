@@ -33,6 +33,7 @@ pipeline{
             // docker tag jenkins-app:latest 211125779092.dkr.ecr.us-east-1.amazonaws.com/jenkins-app:latest
             // docker push 211125779092.dkr.ecr.us-east-1.amazonaws.com/jenkins-app:latest
             sh '''
+            echo $REACT_APP_VERSION
             docker build -t jenkins-app:$REACT_APP_VERSION .
             '''        
         }
