@@ -38,6 +38,12 @@ pipeline{
         }
        }
        stage('Deploy AWS'){
+          agent{
+            docker{
+                image 'custom-aws'
+                reuseNode true
+                }
+          }
         steps{
             withCredentials([usernamePassword(credentialsId: 'aws_key', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
               sh '''
