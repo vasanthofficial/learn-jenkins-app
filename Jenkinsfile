@@ -58,7 +58,7 @@ pipeline{
             --cluster Jenkins-cluster \
             --service Jenkins-server-nginx-service \
             --region us-east-1 \
-            --task-definition Jenkins-server-nginx-service:12
+            --task-definition Jenkins-server-nginx:12
              '''
             }
         }
