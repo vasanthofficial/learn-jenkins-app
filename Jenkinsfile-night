@@ -3,8 +3,10 @@ pipeline {
         stages {
             stage('Docker image'){
                 steps{
-                    sh 'docker build -t custom-build .'
+                    sh 'docker build -f aws/Dockerfile -t build-image .'
+                    sh 'docker build -f custom-build/Dockerfile -t custom-aws .'
                 }
             }
         }
 }
+
