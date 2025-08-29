@@ -42,6 +42,7 @@ pipeline{
             docker{
                 image 'custom-aws'
                 reuseNode true
+                args '--entrypoint""'
                 }
           }
         steps{
