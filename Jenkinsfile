@@ -51,7 +51,7 @@ pipeline{
             docker tag $AWS_DOCKER_REGISTRY/jenkins-container:$REACT_APP_VERSION 211125779092.dkr.ecr.us-east-1.amazonaws.com/jenkins-app:latest
             docker push 211125779092.dkr.ecr.us-east-1.amazonaws.com/jenkins-app:latest
 
-           TASK_VERSION=$(aws ecs register-task-definition --cli-input-json file://learn-jenkins-app/aws/task-definition.json | jq -r '.taskDefinition.revision')
+           TASK_VERSION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition.json | jq -r '.taskDefinition.revision')
             aws ecs update-service \
             --cluster Jenkins-cluster \
             --service Jenkins-server-nginx-service \
