@@ -5,6 +5,7 @@ pipeline {
                 steps{
                     // sh 'docker build -f aws/Dockerfile -t build-image .'
                     sh 'docker build -f custom-build/Dockerfile -t custom-aws .'
+                   // Comments Here
                 }
             }
         }
