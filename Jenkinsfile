@@ -4,6 +4,7 @@ pipeline{
         REACT_APP_VERSION="1.5.$BUILD_ID"
         AWS_DOCKER_REGISTRY="211125779092.dkr.ecr.us-east-1.amazonaws.com"  
     }
+    ///commments
     stages{
        stage('Build'){
         agent{
